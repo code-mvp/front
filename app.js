@@ -7,7 +7,7 @@
 // Front.route('/hi', function() {
 //   var html = $('#template-page').html()
 //   var compiled = Handlebars.compile(html)
-//   $("#content").html(compiled({ title: 'Hi', body: 'Hi again!' }))
+//   $("#content").html(compiled({ title: 'Hi' }))
 // })
 
 new Front.Controller({
@@ -15,7 +15,7 @@ new Front.Controller({
     this.render('index')
   },
   '/hi': function() {
-    this.render('page', { title: 'Hi', body: 'Hi again!' })
+    this.render('page', { title: 'Hi' })
   }
 })
 

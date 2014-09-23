@@ -1,28 +1,17 @@
 // Front - Our own frontend framework
 Front = {}
 
-// Detect if pushState is available. Fallback to hashchange.
-Front.hasPushState = !!(window.history && window.history.pushState)
-
 Front.navigate = function(path) {
-  if (Front.hasPushState) {
-    window.history.pushState({}, "ignored", path)    
-  } else {
-    window.location.hash = '#' + path    
-  }
+  window.history.pushState({}, "ignored", path)    
   Front.load()
 }
 
 Front.start = function() {
-  if (Front.hasPushState) {
-    $(window).on('popstate', Front.load)
-  } else {
-    $(window).on('hashchange', Front.load)    
-  }
+  $(window).on('popstate', Front.load)
 
   // Intercept link clicks
   $(document).on('click', 'a', function() {
-    Front.navigate($(this).attr('href'))
+    Front.navigate(this.href)
     return false
   })
 
@@ -37,11 +26,7 @@ Front.route = function(path, callback) {
 }
 
 Front.load = function() {
-  if (Front.hasPushState) {
-    var url = window.location.pathname    
-  } else {
-    var url = window.location.hash.slice(1) || "/"    
-  }
+  var url = window.location.pathname    
 
   for (var i = 0; i < Front.routes.length; i++) {
     var route = Front.routes[i]
