@@ -21,8 +21,11 @@ Front.start = function() {
 
 Front.routes = []
 
-Front.route = function(path, callback) {
-  this.routes.unshift({ path: path, callback: callback })
+Front.route = function(path, callback, context) {
+  path = path.replace(/:\w+/g, '([^/?]+)') // Replace named params (eg. :permalink)
+  var regexp = new RegExp('^' + path + '$')
+
+  this.routes.push({ regexp: regexp, callback: callback, context: context })
 }
 
 Front.load = function() {
@@ -30,9 +33,10 @@ Front.load = function() {
 
   for (var i = 0; i < Front.routes.length; i++) {
     var route = Front.routes[i]
+    var matches = url.match(route.regexp)
 
-    if (route.path === url) {
-      route.callback()
+    if (matches) {
+      route.callback.call(route.context, matches.slice(1))
       return
     }
   }
@@ -46,12 +50,12 @@ Front.Controller = function(routes) {
   Object.keys(routes).forEach(function(path) {
     var callback = routes[path]
     // Bind the callback function to the current controller.
-    Front.route(path, function() { callback.call(self) })      
+    Front.route(path, callback, self)
   })
 }
 
 Front.Controller.prototype.render = function(template, data) {
-  var html = $('#template-' + template).html()
+  var html = $("[data-template-name='" + template + "']").html()
   // TODO cache this! We don't want to compile the template each time.
   var compiled = Handlebars.compile(html)
 

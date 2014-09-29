@@ -2,22 +2,40 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Front-end framework</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Front - The frontend framework</title>
+
+  <link href="vendor/bootstrap.css" rel="stylesheet">
 </head>
 <body>
-  <!-- The element in which templates will be rendered -->
-  <main id="content"></main>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3">
 
-  <!-- The templates -->
-  <script type="text/x-handlebars-template" id="template-index">
-    <h1>Hello!</h1>
+        <!-- The element in which templates will be rendered -->
+        <main id="content"></main>
 
-    <p><a href="/hi">Click here</a></p>
+      </div>
+    </div>
+  </div><!-- /.container -->
+
+  <!-- The Handlerbars templates -->
+  <script type="text/x-handlebars-template" data-template-name="index">
+    <div class="page-header">
+      <h1>Welcome to my blog!</h1>
+    </div>
+
+    {{#each posts}}
+      <h3><a href="/{{ permalink }}">{{ title }}</a></h3>
+    {{/each}}
   </script>
-  <script type="text/x-handlebars-template" id="template-page">
-    <h1>{{ title }}</h1>
-    <p>Use the browser back button.</p>
+  <script type="text/x-handlebars-template" data-template-name="post">
+    <div class="page-header">
+      <h1>{{ title }}</h1>
+    </div>
+
+    {{{ content }}}
   </script>
 
   <script src="vendor/jquery.js"></script>
