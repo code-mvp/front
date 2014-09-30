@@ -10,3 +10,23 @@ var posts = [
     content: '<p>Just RTFM already.</p><p><em>(TODO write manual)</em></p>'
   },
 ]
+
+Front.route('/', function() {
+  var html = $("[data-template-name='index']").html()
+  var template = Handlebars.compile(html)
+  $("#content").html(template({ posts: posts }))  
+})
+
+Front.route('/:permalink', function(permalink) {
+  var html = $("[data-template-name='post']").html()
+  var template = Handlebars.compile(html)
+  var post = _.findWhere(posts, { permalink: permalink })
+  $("#content").html(template(post))  
+})
+
+$(document).on('click', 'a', function() {
+  Front.navigate(this.href)
+  return false
+})
+
+Front.start()
