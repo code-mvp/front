@@ -26,6 +26,8 @@ var posts = [
 //   $("#content").html(template(post))
 // })
 
+// Nicer API
+
 new Front.Router({
   '/': function() {
     this.render('index', { posts: posts })
@@ -35,6 +37,13 @@ new Front.Router({
     var post = _.findWhere(posts, { permalink: permalink })
     this.render('post', post)
   }
+})
+
+
+// Intercept link clicks
+$(document).on('click', 'a', function() {
+  Front.navigate(this.href)
+  return false
 })
 
 Front.start()

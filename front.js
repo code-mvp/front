@@ -9,12 +9,6 @@ Front.navigate = function(path) {
 Front.start = function() {
   $(window).on('popstate', Front.load)
 
-  // Intercept link clicks
-  $(document).on('click', 'a', function() {
-    Front.navigate(this.href)
-    return false
-  })
-
   // Execute the route for the current location
   Front.load()
 }
@@ -50,12 +44,10 @@ Front.load = function() {
 // A nicer API
 
 Front.Router = function(routes) {
-  var self = this
-  Object.keys(routes).forEach(function(path) {
+  for (var path in routes) {
     var callback = routes[path]
-    // Bind the callback function to the current controller.
-    Front.route(path, callback, self)
-  })
+    Front.route(path, callback, this)
+  }
 }
 
 Front.Router.prototype.render = function(template, data) {
