@@ -19,7 +19,7 @@ Front.load = function() {
     var matches = url.match(route.regexp)
 
     if (matches) {
-      route.callback.apply(null, matches.slice(1)) // callback("permalink")
+      route.callback.apply(route.context, matches.slice(1)) // callback("permalink")
       return
     }
   }
@@ -27,12 +27,28 @@ Front.load = function() {
 
 Front.routes = []
 
-Front.route = function(path, callback) {
+Front.route = function(path, callback, context) {
   path = path.replace(/:\w+/g, '([^/?]+)') // :permalink => ([^/?]+)
   var regexp = new RegExp("^" + path + "$")
 
   Front.routes.push({
     regexp: regexp,
-    callback: callback
+    callback: callback,
+    context: context
   })
+}
+
+Front.Router = function(routes) {
+  for (var path in routes) {
+    var callback = routes[path]
+
+    Front.route(path, callback, this)
+  }
+}
+
+Front.Router.prototype.render = function(template, data) {
+  var html = $("[data-template-name='" + template + "']").html()
+  // TODO cache compiledTemplate
+  var compiledTemplate = Handlebars.compile(html)
+  $("#content").html(compiledTemplate(data))  
 }
