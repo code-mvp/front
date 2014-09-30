@@ -22,7 +22,7 @@ var posts = [
 // Front.route('/:permalink', function(permalink) {
 //   var html = $("[data-template-name='post']").html()
 //   var template = Handlebars.compile(html)
-//   var post = posts.filter(function(post) { return post.permalink == permalink })[0]
+//   var post = _.findWhere(posts, { permalink: permalink })
 //   $("#content").html(template(post))
 // })
 
@@ -32,7 +32,7 @@ new Front.Router({
   },
   
   '/:permalink': function(permalink) {
-    var post = posts.filter(function(post) { return post.permalink == permalink })[0]
+    var post = _.findWhere(posts, { permalink: permalink })
     this.render('post', post)
   }
 })

@@ -25,7 +25,11 @@ Front.route = function(path, callback, context) {
   path = path.replace(/:\w+/g, '([^/?]+)') // Replace named params (eg. :permalink)
   var regexp = new RegExp('^' + path + '$')
 
-  this.routes.push({ regexp: regexp, callback: callback, context: context })
+  this.routes.push({
+    regexp: regexp,
+    callback: callback,
+    context: context
+  })
 }
 
 Front.load = function() {
@@ -36,7 +40,7 @@ Front.load = function() {
     var matches = url.match(route.regexp)
 
     if (matches) {
-      route.callback.call(route.context, matches.slice(1))
+      route.callback.apply(route.context, matches.slice(1))
       return
     }
   }
