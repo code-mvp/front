@@ -10,31 +10,3 @@ var posts = [
     content: '<p>Just RTFM already.</p><p><em>(TODO write manual)</em></p>'
   },
 ]
-
-// A demo app built with our framework
-
-// Front.route('/', function() {
-//   var html = $("[data-template-name='index']").html()
-//   var template = Handlebars.compile(html)
-//   $("#content").html(template({ posts: posts }))
-// })
-
-// Front.route('/:permalink', function(permalink) {
-//   var html = $("[data-template-name='post']").html()
-//   var template = Handlebars.compile(html)
-//   var post = _.findWhere(posts, { permalink: permalink })
-//   $("#content").html(template(post))
-// })
-
-new Front.Router({
-  '/': function() {
-    this.render('index', { posts: posts })
-  },
-  
-  '/:permalink': function(permalink) {
-    var post = _.findWhere(posts, { permalink: permalink })
-    this.render('post', post)
-  }
-})
-
-Front.start()
