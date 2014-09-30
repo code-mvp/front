@@ -26,7 +26,7 @@ var posts = [
 //   $("#content").html(template(post))
 // })
 
-new Front.Controller({
+new Front.Router({
   '/': function() {
     this.render('index', { posts: posts })
   },

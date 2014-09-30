@@ -45,7 +45,7 @@ Front.load = function() {
 
 // A nicer API
 
-Front.Controller = function(routes) {
+Front.Router = function(routes) {
   var self = this
   Object.keys(routes).forEach(function(path) {
     var callback = routes[path]
@@ -54,7 +54,7 @@ Front.Controller = function(routes) {
   })
 }
 
-Front.Controller.prototype.render = function(template, data) {
+Front.Router.prototype.render = function(template, data) {
   var html = $("[data-template-name='" + template + "']").html()
   // TODO cache this! We don't want to compile the template each time.
   var compiled = Handlebars.compile(html)
