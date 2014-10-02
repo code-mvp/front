@@ -1,18 +1,36 @@
 Front = {}
 
+Front.usePushState = !!(window.history && window.history.pushState)
+
+// Uncomment to force use of hashchange.
+// Front.usePushState = false
+
 Front.navigate = function(path) {
-  window.history.pushState({}, "", path)
+  if (Front.usePushState) {
+    window.history.pushState({}, "", path)
+  } else {
+    path = path.replace(/(\/\/|[^\/])*/, "") // If the URL is absolute, make it relative
+    window.location.hash = '#' + path
+  }
   Front.load()
 }
 
 Front.start = function() {
-  $(window).on('popstate', Front.load)
+  if (Front.usePushState) {
+    $(window).on('popstate', Front.load)    
+  } else {
+    $(window).on('hashchange', Front.load)
+  }
 
   Front.load()
 }
 
 Front.load = function() {
-  var url = location.pathname
+  if (Front.usePushState) {
+    var url = location.pathname
+  } else {
+    var url = location.hash.slice(1) || "/"
+  }
   
   for (var i = 0; i < Front.routes.length; i++) {
     var route = Front.routes[i]
