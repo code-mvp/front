@@ -1,4 +1,4 @@
-# Ray caster
+# Front
 
 A frontend web framework similar to Backbone and such (but only the Router).
 
